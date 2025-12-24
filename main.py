@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from api.v1.endpoints.routers import api_router
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title='BrasilPrev')
+app = FastAPI(title='PensionOne')
 app.include_router(api_router)
 
 origins = [
