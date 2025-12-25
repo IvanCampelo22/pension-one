@@ -22,12 +22,18 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            
+
+            set -e
+
+            echo "➡️ Entrando no diretório do projeto"
             cd ${{ secrets.APP_PATH }}
+
+            echo "➡️ Atualizando código"
             git pull origin main
 
-            docker-compose down
-            docker-compose build
-            docker-compose up -d
+            echo "➡️ Subindo containers com Docker Compose v2"
+            docker compose up -d --build
+
+            echo "✅ Deploy finalizado com sucesso"
 
           EOF
