@@ -572,3 +572,4 @@ async def test_rescue_invalid_initial_lack():
     
     assert exc_info.value.status_code == 400
     assert exc_info.value.detail == "Carência inicial de resgate de 60 dias não foi cumprida."
+    
