@@ -25,30 +25,30 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PORT: ${{ secrets.DB_PORT }}
-          APP_PATH: ${{ secrets.APP_PATH }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no "$EC2_USER@$EC2_HOST" << 'EOF'
+          ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+
             set -e
 
             echo "➡️ Entrando no diretório do projeto"
-            cd "$APP_PATH"
+            cd ${{ secrets.APP_PATH }}
+
+            echo "➡️ Criando arquivo .env"
+            cat > .env <<ENV
+            DB_NAME=$DB_NAME
+            DB_USER=$DB_USER
+            DB_PASSWORD=$DB_PASSWORD
+            DB_HOST=$DB_HOST
+            DB_PORT=$DB_PORT
+            ENV
 
             echo "➡️ Atualizando código"
             git pull origin main
 
-            echo "➡️ Criando arquivo .env"
-            printf "%s\n" \
-              "DB_NAME=$DB_NAME" \
-              "DB_USER=$DB_USER" \
-              "DB_PASSWORD=$DB_PASSWORD" \
-              "DB_HOST=$DB_HOST" \
-              "DB_PORT=$DB_PORT" \
-              > .env
-
-            echo "➡️ Subindo containers com Docker Compose"
+            echo "➡️ Subindo containers com Docker Compose v2"
             docker compose up -d --build
 
             echo "✅ Deploy finalizado com sucesso"
+
           EOF
