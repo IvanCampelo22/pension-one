@@ -4,9 +4,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from api.v1.core.config import settings
 
+# ⚠️ SSL CONTEXT (TEMPORÁRIO – sem validação de certificado)
 ssl_context = ssl.create_default_context()
-ssl_context.check_hostname = True
-ssl_context.verify_mode = ssl.CERT_REQUIRED
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
 
 DATABASE_URL = (
     f"postgresql+asyncpg://{settings.DB_USER}"
@@ -15,8 +16,8 @@ DATABASE_URL = (
 
 engine = create_async_engine(
     DATABASE_URL,
-    echo=True,
     pool_pre_ping=True,
+    echo=True,
     connect_args={
         "password": settings.DB_PASSWORD,
         "ssl": ssl_context,
