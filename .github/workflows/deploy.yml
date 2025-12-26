@@ -28,14 +28,14 @@ jobs:
             echo "➡️ Entrando no diretório do projeto"
             cd ${{ secrets.APP_PATH }}
 
-            echo "➡️ Criando arquivo .env (corrigido)"
-            printf "%s\n" \
-              "DB_NAME=${{ secrets.DB_NAME }}" \
-              "DB_USER=${{ secrets.DB_USER }}" \
-              "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
-              "DB_HOST=${{ secrets.DB_HOST }}" \
-              "DB_PORT=${{ secrets.DB_PORT }}" \
-              > .env
+            echo "➡️ Criando arquivo .env (corrigido de verdade)"
+            cat > .env <<'ENV'
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            ENV
 
             echo "➡️ Atualizando código"
             git pull origin main
