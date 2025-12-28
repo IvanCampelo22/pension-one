@@ -26,3 +26,4 @@ jobs:
              cd ${{ secrets.APP_PATH }} &&
              git pull origin main &&
              docker compose up -d --build"
+             
