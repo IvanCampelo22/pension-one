@@ -21,27 +21,27 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+            "bash -lc '
+              set -e
 
-set -e
+              echo \"➡️ Entrando no diretório do projeto\"
+              cd \"${{ secrets.APP_PATH }}\"
 
-echo "➡️ Entrando no diretório do projeto"
-cd ${{ secrets.APP_PATH }}
+              echo \"➡️ Atualizando código\"
+              git pull origin main
 
-echo "➡️ Criando arquivo .env (correto)"
-cat > .env <<'ENV'
-DB_NAME=${{ secrets.DB_NAME }}
-DB_USER=${{ secrets.DB_USER }}
-DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-DB_HOST=${{ secrets.DB_HOST }}
-DB_PORT=${{ secrets.DB_PORT }}
-ENV
+              echo \"➡️ Criando arquivo .env (seguro)\"
+              printf \"%s\n\" \
+                \"DB_NAME=${{ secrets.DB_NAME }}\" \
+                \"DB_USER=${{ secrets.DB_USER }}\" \
+                \"DB_PASSWORD=${{ secrets.DB_PASSWORD }}\" \
+                \"DB_HOST=${{ secrets.DB_HOST }}\" \
+                \"DB_PORT=${{ secrets.DB_PORT }}\" \
+                > .env
 
-echo "➡️ Atualizando código"
-git pull origin main
+              echo \"➡️ Subindo containers com Docker Compose\"
+              docker compose up -d --build
 
-echo "➡️ Subindo containers com Docker Compose"
-docker compose up -d --build
-
-echo "✅ Deploy finalizado com sucesso"
-EOF
+              echo \"✅ Deploy finalizado com sucesso\"
+            '"
