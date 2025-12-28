@@ -1,6 +1,8 @@
 import ssl
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
+from urllib.parse import quote_plus
+
 
 from api.v1.core.config import settings
 
@@ -10,9 +12,9 @@ ssl_context.verify_mode = ssl.CERT_NONE
 
 DATABASE_URL = (
     f"postgresql+asyncpg://{settings.DB_USER}:"
-    f"{settings.DB_PASSWORD}"
+    f"{quote_plus(settings.DB_PASSWORD)}"
     f"@{settings.DB_HOST}:"
-    f"{settings.DB_PORT or 5432}/"
+    f"{settings.DB_PORT}/"
     f"{settings.DB_NAME}"
 )
 
