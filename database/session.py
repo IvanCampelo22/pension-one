@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 from api.v1.core.config import settings
 
-# ⚠️ SSL CONTEXT (TEMPORÁRIO – sem validação de certificado)
 ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
@@ -16,6 +15,8 @@ DATABASE_URL = (
     f"{settings.DB_PORT or 5432}/"
     f"{settings.DB_NAME}"
 )
+
+print(DATABASE_URL)
 
 engine = create_async_engine(
     DATABASE_URL,
