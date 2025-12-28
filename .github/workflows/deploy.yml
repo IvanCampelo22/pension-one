@@ -19,29 +19,33 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Deploy to EC2
+        env:
+          DB_PASSWORD_B64: ${{ secrets.DB_PASSWORD_B64 }}
         run: |
           ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
             "bash -lc '
               set -e
 
-              echo \"➡️ Entrando no diretório do projeto\"
               cd \"${{ secrets.APP_PATH }}\"
+
+              echo \"➡️ Criando arquivo .env (BASE64 blindado)\"
+
+              DB_PASSWORD=\$(echo \"$DB_PASSWORD_B64\" | base64 --decode)
+
+              cat > .env <<EOF
+              DB_NAME=${{ secrets.DB_NAME }}
+              DB_USER=${{ secrets.DB_USER }}
+              DB_PASSWORD=\$DB_PASSWORD
+              DB_HOST=${{ secrets.DB_HOST }}
+              DB_PORT=${{ secrets.DB_PORT }}
+              EOF
 
               echo \"➡️ Atualizando código\"
               git pull origin main
 
-              echo \"➡️ Criando arquivo .env (seguro)\"
-              printf \"%s\n\" \
-                \"DB_NAME=${{ secrets.DB_NAME }}\" \
-                \"DB_USER=${{ secrets.DB_USER }}\" \
-                \"DB_PASSWORD=${{ secrets.DB_PASSWORD }}\" \
-                \"DB_HOST=${{ secrets.DB_HOST }}\" \
-                \"DB_PORT=${{ secrets.DB_PORT }}\" \
-                > .env
-
-              echo \"➡️ Subindo containers com Docker Compose\"
+              echo \"➡️ Subindo containers\"
               docker compose up -d --build
 
-              echo \"✅ Deploy finalizado com sucesso\"
+              echo \"✅ Deploy finalizado\"
             '"
