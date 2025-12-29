@@ -10,7 +10,7 @@ ssl_context.verify_mode = ssl.CERT_NONE
 
 DATABASE_URL = (
     f"postgresql+asyncpg://{settings.DB_USER}:"
-    f"K7!vQ3^mP9#tL2$zX5&h"
+    f"{settings.DB_PASSWORD}"
     f"@{settings.DB_HOST}:"
     f"{settings.DB_PORT}/"
     f"{settings.DB_NAME}"
