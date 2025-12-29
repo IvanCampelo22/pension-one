@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: "K7!vQ3^mP9#tL2$$zX5&h"
     restart: always
 
   web:
@@ -20,7 +20,7 @@ services:
     environment:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PASSWORD: "K7!vQ3^mP9#tL2$$zX5&h"
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
     depends_on:
@@ -40,4 +40,3 @@ services:
 
 volumes:
   db_data:
-  
