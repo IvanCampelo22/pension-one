@@ -9,7 +9,6 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
 
   web:
@@ -20,7 +19,6 @@ services:
     environment:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
     depends_on:
