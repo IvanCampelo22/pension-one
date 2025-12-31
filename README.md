@@ -1,4 +1,4 @@
-# Teste BrasilPrev | Backe-End
+# PensionOne | Backe-End
 
 
 ### Conteúdo
@@ -118,42 +118,3 @@
 
 > No arquivo docker compose está as credenciais padrão de meu banco de dados local, caso ocorra problema, basta atualiza-las para as suas credenciais
 
-
-# Notas sobre o teste 
-
-## Autenticação 
-
-> A princípio, seria necessário adicionar autenticação. Separando administrador e usuários comuns, 
-setando permissões nos endpoints.
-
-
-## Celery
-
-> Também seria interessante criar tasks utilizando o celery com o intuito de fazer verificações sobre os dados do cliente,
-se está tudo de acordo com as diretrizes da empresa, também podendo ocorrer alterações no status de atividade
-da conta do cliente.  
-
-
-## Envio de emails
-
-> Envio de e-mails. Por exemplo, quando o cliente garantir um plano, um e-mail é enviado para o endereço cadastrado,
-notificando que o plano foi adquirido com sucesso. Ou, caso a data de expiração se aproxime, 
-com uma task do celery agendada fazendo verificação constante, 
-seria enviado um e-mail informando que seria necessário uma renovação.  
-
-
-## Validação
-
-> Validar de uma forma mais depurada os campos que vem do cliente-side, como cpf, emails e valores
-
-
-## SoftDelete
-
-Metódo onde os registros não são apagados permanentemente do banco de dados, no entanto, tem seu status alterado. Por exemplo: is_active=False 
-
-
-## Obs:
-
-> As credenciais estão expostas para facilitar a execução do projeto e também porque 
-o código não vai ser hospedado em lugar nenhum. 
-Tenho ciência de parâmetros de segurança e conhecimento sobre a manipulação das variáveis de ambiente
